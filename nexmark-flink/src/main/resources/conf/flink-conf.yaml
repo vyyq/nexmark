@@ -28,9 +28,9 @@ io.tmp.dirs: /tmp
 #==============================================================================
 
 # JVM options for GC
-env.java.opts: -verbose:gc -XX:NewRatio=3 -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:ParallelGCThreads=4
-env.java.opts.jobmanager: -Xloggc:$FLINK_LOG_DIR/jobmanager-gc.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=2 -XX:GCLogFileSize=512M
-env.java.opts.taskmanager: -Xloggc:$FLINK_LOG_DIR/taskmanager-gc.log -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=2 -XX:GCLogFileSize=512M
+env.java.opts: -verbose:gc -XX:NewRatio=3 -Xlog:gc* -Xlog:::time,level,tags -XX:+UseParallelGC -XX:ParallelGCThreads=4
+env.java.opts.jobmanager: -Xloggc:$FLINK_LOG_DIR/jobmanager-gc.log -Xlog::::filecount=2,filesize=512M
+env.java.opts.taskmanager: -Xloggc:$FLINK_LOG_DIR/taskmanager-gc.log -Xlog::::filecount=2,filesize=512M
 
 #==============================================================================
 # Job schedule & failover

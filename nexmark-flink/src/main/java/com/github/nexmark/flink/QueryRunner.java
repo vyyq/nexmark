@@ -178,9 +178,12 @@ public class QueryRunner {
 
 	public void submitSQLJob(List<String> sqlLines) throws IOException {
 		Path flinkBin = flinkDist.resolve("bin");
+		Path flinkConf = flinkDist.resolve("conf");
 		final List<String> commands = new ArrayList<>();
 		commands.add(flinkBin.resolve("sql-client.sh").toAbsolutePath().toString());
 		commands.add("embedded");
+		commands.add("-i");
+		commands.add(flinkConf.resolve("init.sql").toAbsolutePath().toString());
 
 		LOG.info("\n================================================================================"
 				+ "\nQuery {} is running."
