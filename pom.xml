@@ -30,7 +30,7 @@ under the License.
     <properties>
         <flink.version>1.17.0</flink.version>
         <slf4j.version>1.7.15</slf4j.version>
-        <log4j.version>1.2.17</log4j.version>
+        <log4j.version>2.17.1</log4j.version>
         <java.version>1.8</java.version>
         <scala.binary.version>2.12</scala.binary.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
