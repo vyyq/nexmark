@@ -82,7 +82,7 @@ state.backend: rocksdb
 state.checkpoints.dir: file:///path/to/checkpoint
 state.backend.rocksdb.localdir: /tmp
 state.backend.incremental: true
-execution.checkpointing.interval: 180000
+execution.checkpointing.interval: 18000000
 execution.checkpointing.mode: EXACTLY_ONCE
 state.backend.local-recovery: true
 
