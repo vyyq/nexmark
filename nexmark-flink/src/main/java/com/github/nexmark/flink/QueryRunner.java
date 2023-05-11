@@ -21,6 +21,7 @@ package com.github.nexmark.flink;
 import com.github.nexmark.flink.metric.FlinkRestClient;
 import com.github.nexmark.flink.metric.JobBenchmarkMetric;
 import com.github.nexmark.flink.metric.MetricReporter;
+import com.github.nexmark.flink.perf.ExecuteExternalScript;
 import com.github.nexmark.flink.utils.AutoClosableProcess;
 import com.github.nexmark.flink.workload.Workload;
 import org.slf4j.Logger;
@@ -82,7 +83,10 @@ public class QueryRunner {
 			runInternal();
 			// blocking until collect enough metrics
 			String jobId = flinkRestClient.getCurrentJobId();
+			ExecuteExternalScript perfProcess = new ExecuteExternalScript();
+			String perfScript = "sudo perf record -e cache-misses,cache-references -o perf.data -p " + perfProcess.getJvmPid(); // Start perf
 			JobBenchmarkMetric metrics = metricReporter.reportMetric(jobId, workload.getEventsNum());
+			perfProcess.stopScript(true); // Stop perf
 			// cancel job
 			System.out.println("Stop job query " + queryName);
 			LOG.info("Stop job query " + queryName);
