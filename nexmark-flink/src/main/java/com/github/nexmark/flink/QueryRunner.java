@@ -85,6 +85,7 @@ public class QueryRunner {
 			String jobId = flinkRestClient.getCurrentJobId();
 			ExecuteExternalScript perfProcess = new ExecuteExternalScript();
 			String perfScript = "sudo perf record -e cache-misses,cache-references -o perf.data -p " + perfProcess.getJvmPid(); // Start perf
+			perfProcess.startScript(perfScript);
 			JobBenchmarkMetric metrics = metricReporter.reportMetric(jobId, workload.getEventsNum());
 			perfProcess.stopScript(true); // Stop perf
 			// cancel job
