@@ -25,4 +25,5 @@ bin=`cd "$bin"; pwd`
 CMD=$1
 
 # CMD=start_perf or stop_perf
+echo "Perf all workers: $CMD"
 perfWorkers $CMD

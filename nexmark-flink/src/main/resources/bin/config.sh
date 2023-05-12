@@ -128,10 +128,10 @@ perfWorkers() {
     if [ ${WORKERS_ALL_LOCALHOST} = true ] ; then
         # all-local setup
         for worker in ${WORKERS[@]}; do
-          if [ "${CMD}" == "perf_start" ] ; then
+          if [ "${CMD}" == "start_perf" ] ; then
               echo "Starting perf on $worker"
               "${NEXMARK_BIN_DIR}"/perf_start_on_single_node.sh
-          elif [ "${CMD}" == "perf_stop" ] ; then
+          elif [ "${CMD}" == "stop_perf" ] ; then
               echo "Stopping perf on $worker"
               "${NEXMARK_BIN_DIR}"/perf_stop_on_single_node.sh
           else
@@ -143,8 +143,10 @@ perfWorkers() {
         # non-local setup
         for worker in ${WORKERS[@]}; do
           if [[ $CMD == "start_perf" ]] ; then
+            echo "Starting perf on $worker"
             ssh -n $worker -- "nohup /bin/bash -l $NEXMARK_BIN_DIR/perf_start_on_single_node.sh &"
           elif [[ $CMD == "stop_perf" ]] ; then
+            echo "Stopping perf on $worker"
             ssh -n $worker -- "nohup /bin/bash -l $NEXMARK_BIN_DIR/perf_stop_on_single_node.sh &"
           else
             echo "Unknown command: ${CMD}"
