@@ -19,6 +19,7 @@ public class ExecuteExternalScript {
     public void startScript(String script) throws IOException {
         System.out.println("Start executing script " + script);
         ProcessBuilder processBuilder = new ProcessBuilder("/bin/bash", "-c", script);
+        processBuilder.inheritIO();
         this.scriptProcess = processBuilder.start();
     }
 
@@ -29,6 +30,7 @@ public class ExecuteExternalScript {
             throw new IOException("Script is null, do nothing");
         }
         ProcessBuilder processBuilder = new ProcessBuilder("/bin/bash", "-c", this.script);
+        processBuilder.inheritIO();
         this.scriptProcess = processBuilder.start();
     }
 
