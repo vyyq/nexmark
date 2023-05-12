@@ -83,11 +83,12 @@ public class QueryRunner {
 			runInternal();
 			// blocking until collect enough metrics
 			String jobId = flinkRestClient.getCurrentJobId();
-			ExecuteExternalScript perfProcess = new ExecuteExternalScript();
-			String perfScript = "sudo perf record -e cache-misses,cache-references -o perf.data -p " + perfProcess.getJvmPid(); // Start perf
-			perfProcess.startScript(perfScript);
+			String binLocation = location.toFile().getAbsolutePath() + "/bin";
+			ExecuteExternalScript perfStartProcess = new ExecuteExternalScript(binLocation + "/perf.sh " + "start_perf");
+			ExecuteExternalScript perfStopProcess = new ExecuteExternalScript(binLocation + "/perf.sh " + "stop_perf");
+			perfStartProcess.startScript();
 			JobBenchmarkMetric metrics = metricReporter.reportMetric(jobId, workload.getEventsNum());
-			perfProcess.stopScript(true); // Stop perf
+			perfStopProcess.startScript();
 			// cancel job
 			System.out.println("Stop job query " + queryName);
 			LOG.info("Stop job query " + queryName);
