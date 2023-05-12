@@ -12,5 +12,6 @@ events="-e cpu/core/LLC-load-misses -e cpu_core/LLC-loads -e cpu_core/LLC-store-
 for jvm_pid in ${jvm_pid_list}
 do
     # perf on these JVM processes
+    echo "perf record $events -p $jvm_pid -o $perf_${jvm_pid}.data &"
     perf record $events -p $jvm_pid -o $perf_${jvm_pid}.data &
 done

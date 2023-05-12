@@ -129,8 +129,10 @@ perfWorkers() {
         # all-local setup
         for worker in ${WORKERS[@]}; do
           if [ "${CMD}" == "perf_start" ] ; then
+              echo "Starting perf on $worker"
               "${NEXMARK_BIN_DIR}"/perf_start_on_single_node.sh
           elif [ "${CMD}" == "perf_stop" ] ; then
+              echo "Stopping perf on $worker"
               "${NEXMARK_BIN_DIR}"/perf_stop_on_single_node.sh
           else
               echo "Unknown command: ${CMD}"
