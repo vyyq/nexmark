@@ -120,3 +120,34 @@ TMWorkers() {
         done
     fi
 }
+
+perfWorkers() {
+    CMD=$1
+    readWorkers
+
+    if [ ${WORKERS_ALL_LOCALHOST} = true ] ; then
+        # all-local setup
+        for worker in ${WORKERS[@]}; do
+          if [ "${CMD}" == "perf_start" ] ; then
+              "${NEXMARK_BIN_DIR}"/perf_start_on_single_node.sh
+          elif [ "${CMD}" == "perf_stop" ] ; then
+              "${NEXMARK_BIN_DIR}"/perf_stop_on_single_node.sh
+          else
+              echo "Unknown command: ${CMD}"
+              exit 1
+          fi
+        done
+    else
+        # non-local setup
+        for worker in ${WORKERS[@]}; do
+          if [[ $CMD == "start_perf" ]] ; then
+            ssh -n $worker -- "nohup /bin/bash -l $NEXMARK_BIN_DIR/perf_start_on_single_node.sh &"
+          elif [[ $CMD == "stop_perf" ]] ; then
+            ssh -n $worker -- "nohup /bin/bash -l $NEXMARK_BIN_DIR/perf_stop_on_single_node.sh &"
+          else
+            echo "Unknown command: ${CMD}"
+            exit 1
+          fi
+        done
+    fi
+}
