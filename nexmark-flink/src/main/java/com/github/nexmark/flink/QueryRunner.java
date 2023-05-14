@@ -84,7 +84,7 @@ public class QueryRunner {
 			// blocking until collect enough metrics
 			String jobId = flinkRestClient.getCurrentJobId();
 			String binLocation = location.toFile().getAbsolutePath() + "/bin";
-			ExecuteExternalScript perfStartProcess = new ExecuteExternalScript(binLocation + "/perf.sh " + "start_perf");
+			ExecuteExternalScript perfStartProcess = new ExecuteExternalScript(binLocation + "/perf.sh " + "start_perf " + queryName);
 			ExecuteExternalScript perfStopProcess = new ExecuteExternalScript(binLocation + "/perf.sh " + "stop_perf");
 			perfStartProcess.startScript();
 			JobBenchmarkMetric metrics = metricReporter.reportMetric(jobId, workload.getEventsNum());
