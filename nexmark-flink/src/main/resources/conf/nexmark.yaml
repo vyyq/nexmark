@@ -79,6 +79,6 @@ flink.rest.port: 8081
 # Perf config
 #==============================================================================
 
-nexmark.perf.mem.enabled: true
+nexmark.perf.mem.enabled: false
 
 
