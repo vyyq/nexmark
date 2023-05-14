@@ -50,8 +50,9 @@ public class QueryRunner {
 	private final Path flinkDist;
 	private final MetricReporter metricReporter;
 	private final FlinkRestClient flinkRestClient;
+	private final boolean perfMemEnabled;
 
-	public QueryRunner(String queryName, Workload workload, Path location, Path flinkDist, MetricReporter metricReporter, FlinkRestClient flinkRestClient, String category) {
+	public QueryRunner(String queryName, Workload workload, Path location, Path flinkDist, MetricReporter metricReporter, FlinkRestClient flinkRestClient, String category, boolean perfMemEnabled) {
 		this.queryName = queryName;
 		this.workload = workload;
 		this.location = location;
@@ -60,6 +61,7 @@ public class QueryRunner {
 		this.flinkDist = flinkDist;
 		this.metricReporter = metricReporter;
 		this.flinkRestClient = flinkRestClient;
+		this.perfMemEnabled = perfMemEnabled;
 	}
 
 	public JobBenchmarkMetric run() {
@@ -84,11 +86,21 @@ public class QueryRunner {
 			// blocking until collect enough metrics
 			String jobId = flinkRestClient.getCurrentJobId();
 			String binLocation = location.toFile().getAbsolutePath() + "/bin";
-			ExecuteExternalScript perfStartProcess = new ExecuteExternalScript(binLocation + "/perf.sh " + "start_perf " + queryName);
-			ExecuteExternalScript perfStopProcess = new ExecuteExternalScript(binLocation + "/perf.sh " + "stop_perf");
-			perfStartProcess.startScript();
+
+			// Start perf script
+			if (this.perfMemEnabled) {
+				ExecuteExternalScript perfStartProcess = new ExecuteExternalScript(binLocation + "/perf.sh " + "start_perf " + queryName);
+				perfStartProcess.startScript();
+			}
+
 			JobBenchmarkMetric metrics = metricReporter.reportMetric(jobId, workload.getEventsNum());
-			perfStopProcess.startScript();
+
+			// Stop perf processes
+			if (this.perfMemEnabled) {
+				ExecuteExternalScript perfStopProcess = new ExecuteExternalScript(binLocation + "/perf.sh " + "stop_perf");
+				perfStopProcess.startScript();
+			}
+
 			// cancel job
 			System.out.println("Stop job query " + queryName);
 			LOG.info("Stop job query " + queryName);

@@ -72,4 +72,9 @@ public class FlinkNexmarkOptions {
 		.defaultValue(8081)
 		.withDescription("Flink REST port.");
 
+	public static final ConfigOption<Boolean> PERF_MEM_ENABLED = ConfigOptions
+		.key("nexmark.perf.mem.enabled")
+		.booleanType()
+		.defaultValue(false)
+		.withDescription("Whether to enable the `perf mem record` command.");
 }

@@ -94,6 +94,7 @@ public class Benchmark {
 		int jmPort = nexmarkConf.get(FlinkNexmarkOptions.FLINK_REST_PORT);
 		String reporterAddress = nexmarkConf.get(FlinkNexmarkOptions.METRIC_REPORTER_HOST);
 		int reporterPort = nexmarkConf.get(FlinkNexmarkOptions.METRIC_REPORTER_PORT);
+		boolean perfMemEnabled = nexmarkConf.get(FlinkNexmarkOptions.PERF_MEM_ENABLED);
 		FlinkRestClient flinkRestClient = new FlinkRestClient(jmAddress, jmPort);
 		CpuMetricReceiver cpuMetricReceiver = new CpuMetricReceiver(reporterAddress, reporterPort);
 		cpuMetricReceiver.runServer();
@@ -117,7 +118,8 @@ public class Benchmark {
 				location,
 				flinkDist,
 				totalMetrics,
-				category);
+				category,
+				perfMemEnabled);
 
 		// print benchmark summary
 		printSummary(totalMetrics);
@@ -174,7 +176,8 @@ public class Benchmark {
 			Path location,
 			Path flinkDist,
 			LinkedHashMap<String, JobBenchmarkMetric> totalMetrics,
-			String category) {
+			String category,
+			boolean perfMemEnabled) {
 		for (String queryName : queries) {
 			Workload workload = workloadSuite.getQueryWorkload(queryName);
 			if (workload == null) {
@@ -198,7 +201,8 @@ public class Benchmark {
 							flinkDist,
 							reporter,
 							flinkRestClient,
-							category);
+							category,
+							perfMemEnabled);
 			JobBenchmarkMetric metric = runner.run();
 			totalMetrics.put(queryName, metric);
 		}
