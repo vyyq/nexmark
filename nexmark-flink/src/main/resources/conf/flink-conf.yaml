@@ -23,6 +23,7 @@ jobmanager.memory.process.size: 8G
 taskmanager.numberOfTaskSlots: 1
 parallelism.default: 8
 io.tmp.dirs: /tmp
+pipeline.time-characteristic: EventTime
 #==============================================================================
 # JVM
 #==============================================================================
